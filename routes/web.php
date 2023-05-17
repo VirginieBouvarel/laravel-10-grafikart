@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('/blog')->name('blog.')->group(function () {
+    Route::get('/', function () {
+        return [
+            "link" => \route('blog.show', ['slug' => 'article', 'id' => 13]),
+        ];
+    })->name('index');
+    
+    Route::get('/{slug}-{id}', function (String $slug, String $id, Request $request) {
+            return [
+                "slug" => $slug,
+                "id" => $id,
+                "name" => $request->input('name', 'John Doe'),
+            ];
+    })->where([
+        "slug" => '[a-z0-9\-]+',
+        "id" => '[0-9]+',
+    ])->name('show');
 });
