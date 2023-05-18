@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +21,13 @@ Route::get('/', function () {
 
 Route::prefix('/blog')->name('blog.')->group(function () {
     Route::get('/', function () {
-        return [
-            "link" => \route('blog.show', ['slug' => 'article', 'id' => 13]),
-        ];
+        $posts =  Post::find(1);
+        dd($posts);
+
+        return $posts;
+        // return [
+        //     "link" => \route('blog.show', ['slug' => 'article', 'id' => 13]),
+        // ];
     })->name('index');
     
     Route::get('/{slug}-{id}', function (String $slug, String $id, Request $request) {
